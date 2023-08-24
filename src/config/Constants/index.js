@@ -6,5 +6,10 @@ export default CONSTANTS = {
         'Access-Control-Request-Headers': '*',
         'api-key': 'jt4NkhIIhXpFGaBTQap9pbSaF1pa2c6GztGiFmEcC5hYNAnSmL3sPb16a12p7b12',
     },
-    findOne : "/action/findOne"
+    findOne : "/action/findOne",
+    findAllBody : {
+        "collection":"movies",
+        "database":"sample_mflix",
+        "dataSource":"ServerlessInstance0"
+    }
 }

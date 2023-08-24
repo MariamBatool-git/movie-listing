@@ -1,44 +1,51 @@
 import React from "react";
-import {Image, SafeAreaView, View, Text} from 'react-native';
+import {Image, SafeAreaView, View, Text, ScrollView} from 'react-native';
 import styles from "./styles";
 import Constants from "../../config/Constants";
 import { useEffect, useState } from "react";
+import { moviesList } from "../../config/dummyData/moviesList";
 
 export default function Description({route}){
-    // movie to display static dummy data as api is not working
     const movie = route.params.movie;
-    //movieSingle in case if api was working
-    const [movieSingle, setMovie] = useState(route.params.movie);
-    const [loading, setL] = useState(false);
+    const [movieSingle, setMovie] = useState();
 
     const fetchMovie = async() => {
-        setL(!loading);
         const url = `${Constants.API_URL}${Constants.findOne}`;
         fetch(url, {
-            method: "GET",
+            method: "POST",
             headers: Constants.headers,
+            body : JSON.stringify({
+                "collection":"movies",
+                "database":"sample_mflix",
+                "dataSource":"ServerlessInstance0",
+                "filter": {
+                    "_id": ObjectId(movie._id)
+                }
+            })
         })
         .then((res) => res.json())
         .then(res => {
             setMovie(res);
-            setL(!loading);
         })
         .catch((err) => console.log(err))
-
         setTimeout(() => {
-            setL(!loading);
         }, 3000);
     }
 
     useEffect(() => {
        fetchMovie()
     }, []);
-
     return(
-        <SafeAreaView style = {styles.container}>
+        <ScrollView style = {styles.container}>
                 <View style = {styles.imgContainer}>
-                    <Image source={{uri : movie.image}} style = {styles.img}/>
+                    <Image source={{uri : movie.poster}} style = {styles.img}/>
                 </View>
+                <Text style = {styles.yearTitle}>
+                    Title
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.title}
+                </Text>
                 <Text style = {styles.yearTitle}>
                     Year
                 </Text>
@@ -46,17 +53,107 @@ export default function Description({route}){
                     {movie.year}
                 </Text>
                 <Text style = {styles.yearTitle}>
-                    Genre
+                    Genres
                 </Text>
                 <Text style = {styles.year}>
-                    {movie.genre}
+                    {movie.genres.join(", ")}
                 </Text>
                 <Text style = {styles.yearTitle}>
                     Description
                 </Text>
                 <Text style = {styles.year}>
-                    {movie.description}
+                    {movie.plot}
                 </Text>
-        </SafeAreaView>
+                <Text style = {styles.yearTitle}>
+                    Awards
+                </Text>
+                <Text style = {styles.year}>
+                    "Nominations : {movie.awards.nominations}{"\n"}Wins : {movie.awards.wins}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Cast
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.cast.join(", ")}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Countries
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.countries.join(",")}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Directors
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.directors.join(", ")}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Full Plot
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.fullplot}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    IMDB
+                </Text>
+                <Text style = {styles.year}>
+                    ID : {movie.imdb.id}{"\n"}Rating : {movie.imdb.rating}{"\n"}Votes : {movie.imdb.votes}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Languages
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.languages.join(", ")}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Last Updated
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.lastupdated}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Number of mflix comments
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.num_mflix_comments}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Rated
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.rated}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Released
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.released}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Runtime
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.runtime}
+                </Text>
+                <Text style = {styles.yearTitle}>
+                    Tomatoes
+                </Text>
+                <Text style = {styles.year}>
+                    Critic{"\n\t"}Meter : {movie.tomatoes?.critic?.meter}{"\n\t"}Number of Reviews : {movie.tomatoes?.critic?.numReviews}{"\n\t"}Rating : {movie.tomatoes?.critic?.rating}{"\n"}
+                    Fresh : {movie.tomatoes.fresh}{"\n"}
+                    Last Updated : {movie.tomatoes.lastUpdated}{"\n"}
+                    Rotten : {movie.tomatoes.rotten}{"\n"}
+                    Viewer{"\n\t"}Meter : {movie.tomatoes?.viewer?.meter}{"\n\t"}Number of Reviews : {movie.tomatoes?.viewer?.numReviews}{"\n\t"}Rating : {movie.tomatoes?.viewer?.rating}
+               </Text>
+                <Text style = {styles.yearTitle}>
+                    Type
+                </Text>
+                <Text style = {styles.year}>
+                    {movie.type}
+                </Text>
+                
+
+        </ScrollView>
     )
 }

@@ -9,7 +9,7 @@ export default function MovieCard({navigation, movie, route}){
             style = {styles.cardContainer}
             onPress = {() => navigation.navigate("Description", {movie : movie})}
         > 
-            <Image source={{uri : movie.image}} style = {styles.cardImage}/>
+            <Image source={{uri : movie.poster}} style = {styles.cardImage}/>
         </TouchableOpacity>
     )
 }
